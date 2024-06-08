@@ -21,13 +21,13 @@ public class Cube : MonoBehaviour
         _defaultColor = _renderer.material.color;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.TryGetComponent(out Platform platform))
+        if (collision.gameObject.TryGetComponent(out Platform platform))
         {
             if (_spawner != null)
             {
-                ActivateCoroutine();
+                HandleCollision();
             }
         }
     }
@@ -36,7 +36,7 @@ public class Cube : MonoBehaviour
 
     private float RandomizeLifeTime() => Random.Range(_minLifeTime, _maxLifeTime);
 
-    private void ActivateCoroutine()
+    private void HandleCollision()
     {
         if (_isCollided == false)
         {
