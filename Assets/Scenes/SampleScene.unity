@@ -732,31 +732,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1279770005}
-  - component: {fileID: 1279770004}
+  - component: {fileID: 1279770006}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: SpawnerCubes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1279770004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279770003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 974d86580e9c32c4fb709822ae553311, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _prefab: {fileID: 1654482586010206598, guid: 2050eec466bfb7a4684c38a5f3c02c69, type: 3}
-  _startPoint: {fileID: 829735836}
-  _repeatRate: 1
-  _poolCapacity: 5
-  _poolMaxSize: 5
 --- !u!4 &1279770005
 Transform:
   m_ObjectHideFlags: 0
@@ -772,6 +755,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1279770006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279770003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49ed27e8b8769e34c9e8ea02fa42690c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 1654482586010206598, guid: 2050eec466bfb7a4684c38a5f3c02c69, type: 3}
+  _startPoint: {fileID: 829735836}
+  _repeatRate: 1
+  _poolCapacity: 5
+  _poolMaxSize: 5
 --- !u!1 &1847981323
 GameObject:
   m_ObjectHideFlags: 0
