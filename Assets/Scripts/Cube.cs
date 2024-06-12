@@ -2,11 +2,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Cube : Shape
+public class Cube : Shape<Cube>
 {
     private bool _isCollided = false;
-
-    private Coroutine _currentCoroutine;
+    [SerializeField] private SpawnerSphere _spawnerSphere;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -27,7 +26,7 @@ public class Cube : Shape
 
     protected override IEnumerator LifeRoutine()
     {
-        _renderer.material.color = Random.ColorHSV();
+        _renderer.material.color = UnityEngine.Random.ColorHSV();
         yield return base.LifeRoutine();
     }
 

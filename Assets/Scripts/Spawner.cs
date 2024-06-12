@@ -13,13 +13,13 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawnable
 
     public int AmountCreated { get; private set; }
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         _pool = new ObjectPool<T>(
         createFunc: () => Instantiate(_prefab),
         actionOnGet: (obj) => TakeObject(obj),
         actionOnRelease: (obj) => obj.gameObject.SetActive(false),
-        actionOnDestroy: (obj) => Destroy(obj.gameObject),
+        actionOnDestroy: (obj) => Destroy(),
         collectionCheck: true,
         defaultCapacity: _poolCapacity,
         maxSize: _poolMaxSize);
@@ -35,6 +35,11 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawnable
         _pool.Release(obj);
     }
 
+    protected virtual void Destroy() 
+    {
+        Destroy(gameObject);
+    }
+
     private void TakeObject(T obj)
     {
         obj.transform.position = _startPoint.transform.position;
@@ -44,7 +49,7 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawnable
         AmountCreated++;
     }
 
-    private void GetObject()
+    public void GetObject()
     {
         if (_pool.CountActive < _poolMaxSize)
             _pool.Get();

@@ -1,1 +1,3 @@
-﻿public class SpawnerCube : Spawner<Cube> { }
+﻿public class SpawnerCube : Spawner<Cube> 
+{
+}

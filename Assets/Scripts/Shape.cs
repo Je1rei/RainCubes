@@ -2,15 +2,17 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Renderer))]
-public abstract class Shape : MonoBehaviour, ISpawnable
+public abstract class Shape<T> : MonoBehaviour, ISpawnable where T : MonoBehaviour, ISpawnable
 {
     [SerializeField] protected float _minLifeTime = 2f;
     [SerializeField] protected float _maxLifeTime = 5f;
 
     private Color _defaultColor;
 
-    protected Spawner<Shape> _spawner;
+    protected Spawner<T> _spawner;
     protected Renderer _renderer;
+
+    protected Coroutine _currentCoroutine;
 
     protected void Awake()
     {
@@ -18,9 +20,9 @@ public abstract class Shape : MonoBehaviour, ISpawnable
         _defaultColor = _renderer.material.color;
     }
 
-    public void SetSpawner<T>(Spawner<T> spawner) where T : MonoBehaviour, ISpawnable
+    public void SetSpawner<TSpawner>(Spawner<TSpawner> spawner) where TSpawner : MonoBehaviour, ISpawnable
     {
-        _spawner = spawner as Spawner<Shape>;
+        _spawner = spawner as Spawner<T>;
     }
 
     protected float RandomizeLifeTime() => Random.Range(_minLifeTime, _maxLifeTime);
@@ -31,7 +33,7 @@ public abstract class Shape : MonoBehaviour, ISpawnable
 
         yield return waitTime;
 
-        _spawner.ReleasePool(this);
+        _spawner.ReleasePool((T)(object)this);
         Reset();
     }
 
