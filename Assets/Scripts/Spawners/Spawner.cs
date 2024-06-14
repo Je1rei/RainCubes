@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,23 +12,31 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawnable
 
     private ObjectPool<T> _pool;
 
-    public int AmountCreated { get; private set; }
+    public event Action<int> AmountChanged;
+    public event Action<int> ActiveChanged;
 
+    public event Action<T> Spawned;
+    public event Action<T> Returned;
+
+    public int AmountCreated { get; private set; }
+    public int ActiveAmount => _pool.CountActive;
+    
     protected virtual void Awake()
     {
         _pool = new ObjectPool<T>(
         createFunc: () => Instantiate(_prefab),
         actionOnGet: (obj) => TakeObject(obj),
-        actionOnRelease: (obj) => obj.gameObject.SetActive(false),
+        actionOnRelease: (obj) => ReturnObject(obj),
         actionOnDestroy: (obj) => Destroy(),
         collectionCheck: true,
         defaultCapacity: _poolCapacity,
         maxSize: _poolMaxSize);
     }
 
-    protected void Start()
+    public virtual void GetObject()
     {
-        InvokeRepeating(nameof(GetObject), 0.0f, _repeatRate);
+        if (_pool.CountActive < _poolMaxSize)
+            _pool.Get();
     }
 
     public void ReleasePool(T obj)
@@ -35,23 +44,33 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour, ISpawnable
         _pool.Release(obj);
     }
 
-    protected virtual void Destroy() 
+    public void ReturnObject(T obj)
+    {
+        Returned?.Invoke(obj);
+        obj.gameObject.SetActive(false);
+        ActiveChanged?.Invoke(ActiveAmount);
+    }
+
+    protected float GetRepeatRate() => _repeatRate;
+
+    protected void SetStartPosition(Transform transform) => _startPoint = transform;
+
+    protected virtual void Destroy()
     {
         Destroy(gameObject);
     }
 
-    private void TakeObject(T obj)
+    protected void TakeObject(T obj)
     {
         obj.transform.position = _startPoint.transform.position;
         obj.SetSpawner(this);
         obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
         obj.gameObject.SetActive(true);
-        AmountCreated++;
-    }
 
-    public void GetObject()
-    {
-        if (_pool.CountActive < _poolMaxSize)
-            _pool.Get();
+        AmountCreated++;
+
+        ActiveChanged?.Invoke(ActiveAmount);
+        AmountChanged?.Invoke(AmountCreated);
+        Spawned?.Invoke(obj);
     }
 }

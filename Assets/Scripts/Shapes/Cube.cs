@@ -5,13 +5,12 @@ using UnityEngine;
 public class Cube : Shape<Cube>
 {
     private bool _isCollided = false;
-    [SerializeField] private SpawnerSphere _spawnerSphere;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out Platform platform))
         {
-            if (_spawner != null)
+            if (GetSpawner() != null)
             {
                 HandleCollision();
             }
@@ -26,7 +25,8 @@ public class Cube : Shape<Cube>
 
     protected override IEnumerator LifeRoutine()
     {
-        _renderer.material.color = UnityEngine.Random.ColorHSV();
+        base.Initialize();
+
         yield return base.LifeRoutine();
     }
 
@@ -34,7 +34,7 @@ public class Cube : Shape<Cube>
     {
         if (_isCollided == false)
         {
-            _currentCoroutine = StartCoroutine(LifeRoutine());
+            ActivateCoroutine();
             _isCollided = true;
         }
     }
