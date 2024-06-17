@@ -10,10 +10,7 @@ public class Cube : Shape<Cube>
     {
         if (collision.gameObject.TryGetComponent(out Platform platform))
         {
-            if (GetSpawner() != null)
-            {
-                HandleCollision();
-            }
+            HandleCollision();
         }
     }
 
@@ -34,7 +31,7 @@ public class Cube : Shape<Cube>
     {
         if (_isCollided == false)
         {
-            ActivateCoroutine();
+            StartCoroutine(LifeRoutine());
             _isCollided = true;
         }
     }

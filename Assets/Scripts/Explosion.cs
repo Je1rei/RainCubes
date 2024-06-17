@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
@@ -30,6 +29,5 @@ public class Explosion : MonoBehaviour
                 rigidbody.AddExplosionForce(_power, collider.transform.position, _radiusOverlap);
             }
         }
-
     }
 }

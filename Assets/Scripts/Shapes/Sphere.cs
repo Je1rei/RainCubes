@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -10,12 +9,7 @@ public class Sphere : Shape<Sphere>
 
     private void OnEnable()
     {
-        ActivateCoroutine();
-    }
-
-    protected override void Reset()
-    {
-        base.Reset();
+        StartCoroutine(LifeRoutine());
     }
 
     protected override void Initialize()
